@@ -10,8 +10,19 @@ public class LaterList {
         this.items = new ArrayList<>();
     }
 
-    public void addItem(String title) {
-        Item item = new Item(title);
+    public static List<Item> filterItemsByContentType(List<Item> items, String contentType) {
+        List<Item> filteredItems = new ArrayList<>();
+        for (Item item : items) {
+            if (item.getContentType().equalsIgnoreCase(contentType)) {
+                filteredItems.add(item);
+            }
+        }
+        return filteredItems;
+    }
+
+
+    public void addItem(String title, String contentType) {
+        Item item = new Item(title, contentType);
         items.add(item);
     }
 
