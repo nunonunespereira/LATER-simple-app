@@ -18,4 +18,12 @@ public class LaterList {
     public List<Item> getItems() {
         return items;
     }
+
+    public int getSize() {
+        return 0;
+    }
+
+    public void removeItem(Item item) {
+        this.items.remove(item);
+    }
 }

@@ -30,11 +30,28 @@ public class LaterGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame frame = new JFrame("Later List");
-                JTextArea textArea = new JTextArea(10, 20);
+                JPanel listPanel = new JPanel(new GridLayout(laterList.getSize(), 2));
+
                 for (Item item : laterList.getItems()) {
-                    textArea.append(item.getTitle() + "\n");
+                    JLabel titleLabel = new JLabel(item.getTitle());
+                    JButton deleteButton = new JButton("Delete");
+                    deleteButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            laterList.removeItem(item);
+                            listPanel.remove(titleLabel);
+                            listPanel.remove(deleteButton);
+                            listPanel.revalidate();
+                            listPanel.repaint();
+                        }
+                    });
+
+                    listPanel.add(titleLabel);
+                    listPanel.add(deleteButton);
                 }
-                frame.add(textArea);
+
+                JScrollPane scrollPane = new JScrollPane(listPanel);
+                frame.add(scrollPane);
                 frame.pack();
                 frame.setVisible(true);
             }
@@ -54,3 +71,4 @@ public class LaterGUI extends JFrame {
         setVisible(true);
     }
 }
+
