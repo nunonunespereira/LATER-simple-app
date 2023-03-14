@@ -69,19 +69,38 @@ public class LaterGUI extends JFrame {
                     filteredItemsByType.put("Video Games", LaterList.filterItemsByContentType(filteredItems, "video game"));
                 }
 
-                JTextArea textArea = new JTextArea(10, 20);
+                JPanel mainPanel = new JPanel(new GridLayout(filteredItemsByType.keySet().size(), 1));
                 for (String type : filteredItemsByType.keySet()) {
                     List<Item> items = filteredItemsByType.get(type);
                     if (!items.isEmpty()) {
-                        textArea.append(type + ":\n");
+                        JPanel typePanel = new JPanel(new BorderLayout());
+                        typePanel.add(new JLabel(type + ":"), BorderLayout.NORTH);
+
+                        JPanel itemsPanel = new JPanel(new GridLayout(items.size(), 1));
                         for (Item item : items) {
-                            textArea.append(item.getTitle() + "\n");
+                            JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                            JLabel titleLabel = new JLabel(item.getTitle());
+                            JButton deleteButton = new JButton("Delete");
+                            deleteButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    laterList.removeItem(item);
+                                    itemsPanel.remove(itemPanel);
+                                    itemsPanel.revalidate();
+                                    itemsPanel.repaint();
+                                }
+                            });
+                            itemPanel.add(titleLabel);
+                            itemPanel.add(deleteButton);
+                            itemsPanel.add(itemPanel);
                         }
-                        textArea.append("\n");
+                        typePanel.add(new JScrollPane(itemsPanel), BorderLayout.CENTER);
+
+                        mainPanel.add(typePanel);
                     }
                 }
 
-                JScrollPane scrollPane = new JScrollPane(textArea);
+                JScrollPane scrollPane = new JScrollPane(mainPanel);
                 JFrame frame = new JFrame("Later List");
                 frame.add(scrollPane);
                 frame.pack();
